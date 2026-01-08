@@ -36,6 +36,7 @@ export function MicSelector({
   onMutedChange,
   disabled: _disabled = false,
   className: _className,
+  state,
 }: MicSelectorProps) {
   const { devices, loading, error, hasPermission, loadDevices } = useAudioDevices()
   const [internalMuted, setInternalMuted] = useState(false)
@@ -63,7 +64,6 @@ export function MicSelector({
   }
 
   const handleDropdownOpenChange = async (open: boolean) => {
-    setIsDropdownOpen(open)
     if (open && !hasPermission && !loading) {
       await loadDevices()
     }
@@ -107,7 +107,7 @@ export function MicSelector({
       <div className="w-10">
         <LiveWaveform
           active={!isMuted}
-          deviceId={selectedDevice || defaultDeviceId}
+          deviceId={selectedDevice}
           height={20}
           barWidth={3}
           barGap={1}

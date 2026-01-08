@@ -87,3 +87,8 @@ export type { AgoraLogoProps } from "./components/branding/agora-logo"
 // Demo
 export { HelloWorld } from "./components/primitives/hello-world"
 export type { HelloWorldProps } from "./components/primitives/hello-world"
+
+// Utilities
+export { cn, renderMarkdownToHtml, decodeStreamMessage } from "./lib/utils"
+export type { IMessageListItem, EMessageStatus } from "./lib/message-engine"
+export { MessageEngine } from "./lib/message-engine"

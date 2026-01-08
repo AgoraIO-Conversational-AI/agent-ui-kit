@@ -32,7 +32,7 @@ const iconButtonVariants = cva(
   }
 )
 
-interface IconButtonProps
+export interface IconButtonProps
   extends React.ComponentProps<"button">, VariantProps<typeof iconButtonVariants> {}
 
 function IconButton({ className, shape, variant, size, ...props }: IconButtonProps) {

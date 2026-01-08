@@ -11,7 +11,7 @@ interface Item {
   name: string
 }
 
-interface ValuePickerProps {
+export interface ValuePickerProps {
   items: Item[]
   value?: string
   onValueChange?: (value: string) => void

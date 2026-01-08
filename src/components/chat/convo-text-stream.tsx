@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { MessageCircle, X } from "lucide-react"
 
 import { useIsMobile } from "../../hooks/use-is-mobile"
@@ -54,7 +54,7 @@ export function ConvoTextStream({
   }, [messageList, currentInProgressMessage, agentUID])
 
   //  Helper to check if we should show streaming message
-  const shouldShowStreamingMessage = React.useCallback(() => {
+  const shouldShowStreamingMessage = useCallback(() => {
     return (
       currentInProgressMessage !== null &&
       currentInProgressMessage.status === EMessageStatus.IN_PROGRESS &&
