@@ -27,6 +27,10 @@ React component library for building voice AI user interfaces with Agora.
   - [LocalVideoPreview](#localvideopreview)
   - [AvatarVideoDisplay](#avatarvideodisplay)
   - [Avatar](#avatar)
+  - [CameraSelector](#cameraselector)
+- [Layout Components](#layout-components)
+  - [VideoGrid](#videogrid)
+  - [MobileTabs](#mobiletabs)
 - [UI Primitives](#ui-primitives)
   - [Button](#button)
   - [IconButton](#iconbutton)
@@ -71,7 +75,7 @@ applications consume it as a workspace package:
 Import components in your application:
 
 ```typescript
-import { MicButton, AgentVisualizer, Conversation } from "@agora/ui-kit"
+import { MicButton, AgentVisualizer, Conversation } from "@agora/ui-kit";
 ```
 
 ---
@@ -99,7 +103,15 @@ import { MicButton, AgentVisualizer, Conversation } from "@agora/ui-kit"
     │   ├── response.tsx
     │   └── convo-text-stream.tsx
     ├── video/                       # Video components
-    │   └── avatar.tsx
+    │   ├── avatar.tsx
+    │   ├── avatar-video-display.tsx
+    │   ├── local-video-preview.tsx
+    │   └── camera-selector.tsx
+    ├── layout/                      # Layout components
+    │   ├── video-grid.tsx
+    │   └── mobile-tabs.tsx
+    ├── branding/                    # Branding
+    │   └── agora-logo.tsx
     └── primitives/                  # UI primitives
         ├── button.tsx
         ├── icon-button.tsx
@@ -108,8 +120,7 @@ import { MicButton, AgentVisualizer, Conversation } from "@agora/ui-kit"
         ├── value-picker.tsx
         ├── dropdown-menu.tsx
         ├── command.tsx
-        ├── popover.tsx
-        └── hello-world.tsx
+        └── popover.tsx
 ```
 
 **Component Organization:**
@@ -118,7 +129,9 @@ Components are organized into category subfolders:
 
 - **voice/** - Audio controls, visualizations, agent state
 - **chat/** - Conversation, messages, text streaming
-- **video/** - Avatar (local/remote video components coming in future)
+- **video/** - Avatar display, local/remote video preview, camera controls
+- **layout/** - Grid layouts, mobile tabs for responsive designs
+- **branding/** - Agora logo and branding elements
 - **primitives/** - Buttons, cards, form controls
 
 ---
@@ -205,10 +218,10 @@ Microphone button with built-in audio visualization and state management.
 
 ```typescript
 interface MicButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  state?: "idle" | "listening" | "processing" | "error"
-  icon?: React.ReactNode
-  showErrorBadge?: boolean
-  audioData?: number[] // 0-1 normalized frequency data
+  state?: "idle" | "listening" | "processing" | "error";
+  icon?: React.ReactNode;
+  showErrorBadge?: boolean;
+  audioData?: number[]; // 0-1 normalized frequency data
 }
 ```
 
@@ -251,9 +264,9 @@ Animated agent state visualizer with pulsing circles.
 
 ```typescript
 interface AgentVisualizerProps {
-  state: "not-joined" | "listening" | "talking" | "thinking"
-  size?: "sm" | "md" | "lg"
-  className?: string
+  state: "not-joined" | "listening" | "talking" | "thinking";
+  size?: "sm" | "md" | "lg";
+  className?: string;
 }
 ```
 
@@ -291,13 +304,13 @@ Full-featured frequency bar visualizer.
 
 ```typescript
 interface AudioVisualizerProps {
-  data: number[] // 0-1 normalized frequency data
-  barCount?: number // Number of bars (default: 32)
-  barWidth?: number // Bar width in px (default: 4)
-  barGap?: number // Gap between bars (default: 2)
-  height?: number // Height in px (default: 100)
-  color?: string // Bar color (default: 'rgb(59, 130, 246)')
-  className?: string
+  data: number[]; // 0-1 normalized frequency data
+  barCount?: number; // Number of bars (default: 32)
+  barWidth?: number; // Bar width in px (default: 4)
+  barGap?: number; // Gap between bars (default: 2)
+  height?: number; // Height in px (default: 100)
+  color?: string; // Bar color (default: 'rgb(59, 130, 246)')
+  className?: string;
 }
 ```
 
@@ -333,8 +346,8 @@ Compact horizontal bar visualizer for MicButton.
 
 ```typescript
 interface SimpleVisualizerProps {
-  data: number[]
-  className?: string
+  data: number[];
+  className?: string;
 }
 ```
 
@@ -366,11 +379,11 @@ Animated waveform with PTS synchronization support.
 
 ```typescript
 interface LiveWaveformProps {
-  audioData: number[]
-  isActive?: boolean
-  color?: string
-  height?: number
-  className?: string
+  audioData: number[];
+  isActive?: boolean;
+  color?: string;
+  height?: number;
+  className?: string;
 }
 ```
 
@@ -404,11 +417,11 @@ Combined mic button and full audio visualizer (alternative to MicButton).
 
 ```typescript
 interface MicButtonWithVisualizerProps {
-  isActive: boolean
-  isMuted: boolean
-  onClick: () => void
-  audioData?: number[]
-  className?: string
+  isActive: boolean;
+  isMuted: boolean;
+  onClick: () => void;
+  audioData?: number[];
+  className?: string;
 }
 ```
 
@@ -442,10 +455,10 @@ Microphone device selector dropdown.
 
 ```typescript
 interface MicSelectorProps {
-  devices: MediaDeviceInfo[]
-  selectedDeviceId: string
-  onDeviceChange: (deviceId: string) => void
-  className?: string
+  devices: MediaDeviceInfo[];
+  selectedDeviceId: string;
+  onDeviceChange: (deviceId: string) => void;
+  className?: string;
 }
 ```
 
@@ -480,14 +493,14 @@ Container for chat messages with auto-scroll and styling.
 
 ```typescript
 interface ConversationProps {
-  children: React.ReactNode
-  height?: string
-  className?: string
+  children: React.ReactNode;
+  height?: string;
+  className?: string;
 }
 
 interface ConversationContentProps {
-  children: React.ReactNode
-  className?: string
+  children: React.ReactNode;
+  className?: string;
 }
 ```
 
@@ -520,15 +533,15 @@ Individual message bubble for user or agent with optional name label.
 
 ```typescript
 interface MessageProps {
-  from: "user" | "assistant"
-  name?: string // Name to display above message (e.g., "Agent" or "User")
-  children: React.ReactNode
-  className?: string
+  from: "user" | "assistant";
+  name?: string; // Name to display above message (e.g., "Agent" or "User")
+  children: React.ReactNode;
+  className?: string;
 }
 
 interface MessageContentProps {
-  children: React.ReactNode
-  className?: string
+  children: React.ReactNode;
+  className?: string;
 }
 ```
 
@@ -572,8 +585,8 @@ Text content wrapper for messages.
 
 ```typescript
 interface ResponseProps {
-  children: React.ReactNode
-  className?: string
+  children: React.ReactNode;
+  className?: string;
 }
 ```
 
@@ -601,10 +614,10 @@ Streaming text component with typewriter effect.
 
 ```typescript
 interface ConvoTextStreamProps {
-  text: string
-  speed?: number
-  onComplete?: () => void
-  className?: string
+  text: string;
+  speed?: number;
+  onComplete?: () => void;
+  className?: string;
 }
 ```
 
@@ -639,12 +652,12 @@ Display local camera video with mirror effect and optional label.
 
 ```typescript
 interface LocalVideoPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
-  videoTrack?: ICameraVideoTrack | null
-  isMirrored?: boolean // Default: true
-  showLabel?: boolean // Default: false
-  label?: string // Default: "You"
-  placeholder?: React.ReactNode
-  useMediaStream?: boolean // Default: false
+  videoTrack?: ICameraVideoTrack | null;
+  isMirrored?: boolean; // Default: true
+  showLabel?: boolean; // Default: false
+  label?: string; // Default: "You"
+  placeholder?: React.ReactNode;
+  useMediaStream?: boolean; // Default: false
 }
 ```
 
@@ -690,14 +703,14 @@ Display remote avatar video with connection status and placeholder.
 **Props:**
 
 ```typescript
-type AvatarVideoState = "connected" | "loading" | "disconnected"
+type AvatarVideoState = "connected" | "loading" | "disconnected";
 
 interface AvatarVideoDisplayProps extends React.HTMLAttributes<HTMLDivElement> {
-  videoTrack?: IRemoteVideoTrack | null
-  state?: AvatarVideoState // Default: "disconnected"
-  showStatus?: boolean // Default: false
-  placeholder?: React.ReactNode
-  useMediaStream?: boolean // Default: false
+  videoTrack?: IRemoteVideoTrack | null;
+  state?: AvatarVideoState; // Default: "disconnected"
+  showStatus?: boolean; // Default: false
+  placeholder?: React.ReactNode;
+  useMediaStream?: boolean; // Default: false
 }
 ```
 
@@ -755,11 +768,11 @@ User/agent avatar with customizable size and colors.
 
 ```typescript
 interface AvatarProps {
-  src?: string
-  alt?: string
-  initials?: string
-  size?: "sm" | "md" | "lg"
-  className?: string
+  src?: string;
+  alt?: string;
+  initials?: string;
+  size?: "sm" | "md" | "lg";
+  className?: string;
 }
 ```
 
@@ -784,6 +797,164 @@ import { Avatar } from '@agora/ui-kit'
 
 ---
 
+### CameraSelector
+
+Camera device selector dropdown with enable/disable toggle.
+
+**Props:**
+
+```typescript
+interface CameraSelectorProps {
+  devices?: CameraDevice[];
+  value?: string;
+  onValueChange?: (deviceId: string) => void;
+  disabled?: boolean;
+  onDisabledChange?: (disabled: boolean) => void;
+  hasError?: boolean;
+  className?: string;
+}
+
+interface CameraDevice {
+  deviceId: string;
+  label: string;
+  groupId?: string;
+}
+```
+
+**Usage:**
+
+```typescript
+import { CameraSelector } from '@agora/ui-kit'
+
+<CameraSelector
+  devices={cameraDevices}
+  value={selectedCameraId}
+  onValueChange={handleCameraChange}
+  disabled={isCameraOff}
+  onDisabledChange={setIsCameraOff}
+/>
+```
+
+**Features:**
+
+- Lists available camera devices
+- Shows current selection with checkmark
+- Toggle camera on/off with video icon
+- Error state support
+- Dropdown menu for device selection
+
+---
+
+## Layout Components
+
+### VideoGrid
+
+Desktop 2x2 grid layout for video chat applications with dedicated areas for avatar, chat, local video, and controls.
+
+**Props:**
+
+```typescript
+interface VideoGridProps extends React.HTMLAttributes<HTMLDivElement> {
+  avatar?: React.ReactNode;
+  chat?: React.ReactNode;
+  localVideo?: React.ReactNode;
+  controls?: React.ReactNode;
+}
+```
+
+**Layout:**
+
+```
+┌─────────────┬─────────────┐
+│ Chat        │ Avatar      │
+│ (40%)       │ (60%)       │
+├─────────────┼─────────────┤
+│ Local Video │ Controls    │
+│ (40%)       │ (60%)       │
+└─────────────┴─────────────┘
+```
+
+**Usage:**
+
+```typescript
+import { VideoGrid } from '@agora/ui-kit'
+
+<VideoGrid
+  avatar={<AvatarVideoDisplay videoTrack={avatarTrack} />}
+  chat={<Conversation>...</Conversation>}
+  localVideo={<LocalVideoPreview videoTrack={localTrack} />}
+  controls={<div>Control buttons here</div>}
+/>
+```
+
+**Features:**
+
+- Responsive 2x2 grid layout
+- Fixed proportions (40/60 split)
+- 1rem gap between areas
+- Optimized for desktop use
+
+---
+
+### MobileTabs
+
+Mobile tab switcher for video chat layouts with icon support and flexible positioning.
+
+**Props:**
+
+```typescript
+interface MobileTabsProps extends React.HTMLAttributes<HTMLDivElement> {
+  tabs: Tab[];
+  activeTab?: string;
+  onTabChange?: (tabId: string) => void;
+  tabPosition?: "top" | "bottom";
+}
+
+interface Tab {
+  id: string;
+  label: string;
+  icon?: React.ReactNode;
+  content: React.ReactNode;
+}
+```
+
+**Usage:**
+
+```typescript
+import { MobileTabs } from '@agora/ui-kit'
+import { Video, MessageSquare } from 'lucide-react'
+
+<MobileTabs
+  tabs={[
+    {
+      id: 'video',
+      label: 'Video',
+      icon: <Video />,
+      content: <div>Avatar + Local Video</div>
+    },
+    {
+      id: 'chat',
+      label: 'Chat',
+      icon: <MessageSquare />,
+      content: <Conversation>...</Conversation>
+    }
+  ]}
+  activeTab={currentTab}
+  onTabChange={setCurrentTab}
+  tabPosition="bottom"
+/>
+```
+
+**Features:**
+
+- Tab buttons with optional icons
+- Controlled or uncontrolled mode
+- Configurable tab position (top/bottom)
+- Smooth content switching
+- Mobile-optimized touch targets
+
+---
+
 ## UI Primitives
 
 ### Button
@@ -794,9 +965,9 @@ Standard button with variant support.
 
 ```typescript
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "default" | "outline" | "ghost" | "destructive"
-  size?: "sm" | "md" | "lg"
-  className?: string
+  variant?: "default" | "outline" | "ghost" | "destructive";
+  size?: "sm" | "md" | "lg";
+  className?: string;
 }
 ```
 
@@ -831,10 +1002,10 @@ Circular icon button for actions.
 
 ```typescript
 interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  icon: React.ReactNode
-  size?: "sm" | "md" | "lg"
-  variant?: "default" | "ghost"
-  className?: string
+  icon: React.ReactNode;
+  size?: "sm" | "md" | "lg";
+  variant?: "default" | "ghost";
+  className?: string;
 }
 ```
 
@@ -867,8 +1038,8 @@ Simple card container.
 
 ```typescript
 interface CardProps {
-  children: React.ReactNode
-  className?: string
+  children: React.ReactNode;
+  className?: string;
 }
 ```
 
@@ -893,9 +1064,9 @@ Small label/tag component.
 
 ```typescript
 interface ChipProps {
-  children: React.ReactNode
-  variant?: "default" | "success" | "warning" | "error"
-  className?: string
+  children: React.ReactNode;
+  variant?: "default" | "success" | "warning" | "error";
+  className?: string;
 }
 ```
 
@@ -918,13 +1089,13 @@ Value selector with increment/decrement buttons.
 
 ```typescript
 interface ValuePickerProps {
-  value: number
-  onChange: (value: number) => void
-  min?: number
-  max?: number
-  step?: number
-  label?: string
-  className?: string
+  value: number;
+  onChange: (value: number) => void;
+  min?: number;
+  max?: number;
+  step?: number;
+  label?: string;
+  className?: string;
 }
 ```
 
@@ -1117,7 +1288,7 @@ module.exports = {
       },
     },
   },
-}
+};
 ```
 
 ---
